@@ -13,6 +13,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 //builder.Services.AddOpenApi();
 
+
+// configure CORS to allow requests from the Angular frontend
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", policy =>
+    {
+        policy.AllowAnyHeader().AllowAnyMethod()
+        .WithOrigins("http://localhost:4200", "https://localhost:4200");
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,6 +35,8 @@ var app = builder.Build();
 //app.UseHttpsRedirection();
 
 //app.UseAuthorization();
+
+app.UseCors("CorsPolicy");
 
 app.MapControllers();
 
